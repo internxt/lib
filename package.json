@@ -1,0 +1,40 @@
+{
+  "name": "@internxt/lib",
+  "version": "1.0.0",
+  "description": "Common logic shared between different projects of Internxt ",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier src/**/*.ts"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint --fix && yarn format --fix && yarn test"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/internxt/lib.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/internxt/lib/issues"
+  },
+  "homepage": "https://github.com/internxt/lib#readme",
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": "^7.0.1",
+    "jest": "^27.0.6",
+    "prettier": "^2.3.2",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.3.5"
+  }
+}
