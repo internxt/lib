@@ -1,5 +1,5 @@
+name: internxt/lib CI
 
-name: @internxt/lib CI
 on:
   push:
     branches: [master]
