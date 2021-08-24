@@ -1,3 +1,4 @@
 import items from './items';
+import auth from './auth';
 
-export { items };
+export { items, auth };
