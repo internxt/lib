@@ -1,3 +1,4 @@
 import getFilenameAndExt from './getFilenameAndExt';
+import isHiddenItem from './isHiddenItem';
 
-export default { getFilenameAndExt };
+export default { getFilenameAndExt, isHiddenItem };
