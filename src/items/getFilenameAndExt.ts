@@ -10,7 +10,7 @@ interface IGetFilenameAndExt {
  */
 export default function getFilenameAndExt(entireFilename: string): IGetFilenameAndExt {
   // based on path.parse native nodejs function
-  const re = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+  const re = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^/]+?|)(\.[^./]*|))(?:[/]*)$/;
 
   const fileInfo = re.exec(entireFilename);
 
