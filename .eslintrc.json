@@ -8,9 +8,15 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:jsdoc/recommended",
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": 1
+    "prettier/prettier": 1,
+    "jsdoc/require-jsdoc":["error" ,{
+      "publicOnly": true
+    }],
+    "jsdoc/require-param-type": 0,
+    "jsdoc/require-returns-type": 0
   }
 }

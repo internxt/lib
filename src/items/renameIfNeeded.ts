@@ -2,6 +2,7 @@
  * Checks if a rename is needed and returns the new filename.
  * For example, if a file test.txt already exists, the new
  * filename will be test (1).txt.
+ *
  * @param items Existing items in a folder
  * @param filename Filename of the new item
  * @param type Type of the new item

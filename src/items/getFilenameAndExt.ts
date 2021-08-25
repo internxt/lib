@@ -5,6 +5,7 @@ interface IGetFilenameAndExt {
 
 /**
  * Separates entire filename in filename and extension
+ *
  * @param entireFilename Filename + extension
  * @returns Filename and extension splitted
  */
