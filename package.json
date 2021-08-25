@@ -1,6 +1,6 @@
 {
   "name": "@internxt/lib",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Common logic shared between different projects of Internxt ",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
