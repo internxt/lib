@@ -11,7 +11,7 @@ type ErrorMessage = string;
  * @param err Axios error
  * @returns Extracted error message from axios error
  */
-export function extractMessageFromError(err: AxiosError): ErrorMessage {
+export default function extractMessageFromError(err: AxiosError): ErrorMessage {
   let errMsg: string;
   const error: AxiosError = err as AxiosError;
 
