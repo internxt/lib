@@ -352,6 +352,11 @@
   resolved "https://npm.pkg.github.com/download/@internxt/eslint-config-internxt/1.0.0/0301cb70f2f2b597864f24264f4ff4d23ce69d7c1fa7396aa1b08e14c931481b#4be79ebf09182db8122017cd25e36ecff2cc0673"
   integrity sha512-L7QWv5lndb1BX3WpuUkR+sffLLl1x5sLYs1hCGQgcnbhYN4BGGclT4zi/yGlTWhhNTStZUcqTaiZYpDv1isn1g==
 
+"@internxt/prettier-config@^1.0.1":
+  version "1.0.1"
+  resolved "https://npm.pkg.github.com/download/@internxt/prettier-config/1.0.1/e90f9fa863768b01404b71f8c9aa56296f2d515f65ef3fef9a6546218a37c9d8#2eeb3ae2222dffdb3d694a56b547fd6d71823e69"
+  integrity sha512-Dcj83Ydw3nLq9ylD3umUOSW16lbY1QzpHM2ih6OGtIHU54mUiGZiz2mtNJJl/RGhghDrE1Lu4Dovp59nDLPtew==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
