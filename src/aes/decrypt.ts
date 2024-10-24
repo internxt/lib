@@ -4,10 +4,9 @@ import crypto from 'crypto';
  *
  * @param encdata Encrypted text
  * @param password
- * @param iterations
  * @returns Decrypted text
  */
-export default function decrypt(encdata: string, password: string, iterations = 2145): string {
+export default function decrypt(encdata: string, password: string): string {
   // base64 decoding
   const bData = Buffer.from(encdata, 'base64');
 
@@ -22,15 +21,13 @@ export default function decrypt(encdata: string, password: string, iterations = 
   }
 
   // derive key using; 32 byte key length
-  const key = crypto.pbkdf2Sync(password, salt, iterations, 32, 'sha512');
+  const key = Uint8Array.from(crypto.scryptSync(password, salt, 32));
 
   // AES 256 GCM Mode
   const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
-
+  let str = decipher.update(text, undefined, 'utf8');
   decipher.setAuthTag(tag);
+  str += decipher.final('utf8');
 
-  // encrypt the given text
-  const decrypted = decipher.update(text, undefined, 'utf8') + decipher.final('utf8');
-
-  return decrypted;
+  return str;
 }
