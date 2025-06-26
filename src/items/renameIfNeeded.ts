@@ -13,16 +13,16 @@
  *   if it doesn't exist already.
  */
 export default function renameIfNeeded(
-  items: { name: string; type: string }[],
+  items: { name: string; type?: string }[],
   filename: string,
-  type: string,
+  type?: string,
 ): [boolean, number, string] {
   const FILENAME_INCREMENT_REGEX = /( \([0-9]+\))$/i;
   const INCREMENT_INDEX_REGEX = /\(([^)]+)\)/;
 
   const cleanFilename = filename.replace(FILENAME_INCREMENT_REGEX, '');
 
-  const infoFilenames: { name: string; cleanName: string; type: string; incrementIndex: number }[] = items
+  const infoFilenames: { name: string; cleanName: string; type?: string; incrementIndex: number }[] = items
     .map((item) => {
       const cleanName = item.name.replace(FILENAME_INCREMENT_REGEX, '');
       const incrementString = item.name.match(FILENAME_INCREMENT_REGEX)?.pop()?.match(INCREMENT_INDEX_REGEX)?.pop();
@@ -35,7 +35,8 @@ export default function renameIfNeeded(
         incrementIndex,
       };
     })
-    .filter((item) => item.cleanName === cleanFilename && item.type === type)
+    .filter((item) => item.cleanName.toLowerCase() === cleanFilename.toLowerCase()
+      && (item.type?.toLowerCase() ?? '') === (type?.toLowerCase() ?? ''))
     .sort((a, b) => b.incrementIndex - a.incrementIndex);
 
   const filenameExists = !!infoFilenames.length;
