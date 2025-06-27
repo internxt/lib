@@ -1,7 +1,6 @@
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 type AxiosError = any;
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 type AxiosResponse<T> = any;
 type ErrorMessage = string;
 
