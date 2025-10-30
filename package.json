@@ -1,6 +1,6 @@
 {
   "name": "@internxt/lib",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "Common logic shared between different projects of Internxt ",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -8,8 +8,8 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest",
-    "test:cov": "jest --coverage",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "format": "prettier src/**/*.ts",
@@ -26,15 +26,17 @@
   },
   "homepage": "https://github.com/internxt/lib#readme",
   "devDependencies": {
-    "@internxt/eslint-config-internxt": "2.0.0",
+    "@internxt/eslint-config-internxt": "2.0.1",
     "@internxt/prettier-config": "internxt/prettier-config#v1.0.2",
-    "@types/jest": "30.0.0",
-    "@types/node": "24.0.10",
-    "eslint": "9.30.1",
+    "@types/node": "24.9.2",
+    "@vitest/coverage-istanbul": "4.0.5",
+    "eslint": "9.38.0",
     "husky": "9.1.7",
-    "jest": "30.0.4",
     "prettier": "3.6.2",
-    "ts-jest": "29.4.0",
-    "typescript": "5.8.3"
+    "typescript": "5.9.3",
+    "vitest": "4.0.5"
+  },
+  "dependencies": {
+    "uuid": "^13.0.0"
   }
 }
