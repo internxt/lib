@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { aes } from '../../src';
 
 describe('AES encrypt/decrypt tests', () => {
