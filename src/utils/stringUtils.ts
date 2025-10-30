@@ -70,36 +70,41 @@ const generateRandomStringUrlSafe = (size: number): string => {
 function base64UrlSafetoUUID(base64UrlSafe: string): string {
   const hex = Buffer.from(fromBase64UrlSafe(base64UrlSafe), 'base64').toString('hex');
 
-  // eslint-disable-next-line max-len
-  return `${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-${hex.substring(16, 20)}-${hex.substring(20)}`;
+  return `${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}` +
+    `-${hex.substring(16, 20)}-${hex.substring(20)}`;
 }
 
 /**
- * Extracts a send ID from the provided parameter. If the parameter is not a valid UUIDv4,
- * it converts the parameter from a Base64 URL-safe string to a UUID.
+ * Extracts a UUIDv4 from the provided parameter. If the value is not a valid UUIDv4, it tries to convert
+ * the parameter from a Base64 URL-safe string to a UUID. In either case, it returns the provided value.
  *
- * @param param - The input parameter, which can be either a UUIDv4 or a Base64 URL-safe string.
- * @returns The send ID as a UUID string.
+ * @value value - The input parameter, which can be either a UUIDv4 or a Base64 URL-safe string.
+ * @returns The decoded v4 UUID string.
  */
-const decodeSendId = (param: string) => {
-  if (!validateUuidv4(param)) {
-    return base64UrlSafetoUUID(param);
+const decodeV4Uuid = (value: string) => {
+  if (!validateUuidv4(value)) {
+    try {
+      return base64UrlSafetoUUID(value);
+    } catch {
+      return value;
+    }
   }
-  return param;
+  return value;
 };
 
 /**
- * Encodes a send ID by removing hyphens, converting it from hexadecimal to Base64,
+ * Encodes a UUIDv4 by removing hyphens, converting it from hexadecimal to Base64,
  * and then making it URL-safe.
  *
- * @param sendId - The send ID to be encoded, expected to be a UUID string.
+ * @param v4Uuid - The ID to be encoded, expected to be a UUIDv4 string.
  * @returns The encoded send ID as a URL-safe Base64 string.
+ * @throws {Error} If the provided UUIDv4 is not valid.
  */
-const encodeSendId = (sendId: string) => {
-  if (!validateUuidv4(sendId)) {
-    throw new Error('Send id is not valid');
+const encodeV4Uuid = (v4Uuid: string) => {
+  if (!validateUuidv4(v4Uuid)) {
+    throw new Error('The provided UUIDv4 is not valid');
   }
-  const removedUuidDecoration = sendId.replace(/-/g, '');
+  const removedUuidDecoration = v4Uuid.replace(/-/g, '');
   const base64endoded = Buffer.from(removedUuidDecoration, 'hex').toString('base64');
   const encodedSendId = toBase64UrlSafe(base64endoded);
   return encodedSendId;
@@ -110,6 +115,6 @@ export default {
   fromBase64UrlSafe,
   generateRandomStringUrlSafe,
   base64UrlSafetoUUID,
-  decodeSendId,
-  encodeSendId,
+  decodeV4Uuid,
+  encodeV4Uuid,
 };
