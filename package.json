@@ -37,6 +37,6 @@
     "vitest": "4.0.5"
   },
   "dependencies": {
-    "uuid": "^13.0.0"
+    "uuid": "^11.1.0"
   }
 }
