@@ -26,17 +26,17 @@
   },
   "homepage": "https://github.com/internxt/lib#readme",
   "devDependencies": {
-    "@internxt/eslint-config-internxt": "2.0.1",
+    "@internxt/eslint-config-internxt": "2.1.0",
     "@internxt/prettier-config": "internxt/prettier-config#v1.0.2",
-    "@types/node": "24.10.0",
-    "@vitest/coverage-istanbul": "4.0.6",
-    "eslint": "9.39.1",
+    "@types/node": "25.5.0",
+    "@vitest/coverage-istanbul": "4.1.0",
+    "eslint": "10.1.0",
     "husky": "9.1.7",
-    "prettier": "3.6.2",
+    "prettier": "3.8.1",
     "typescript": "5.9.3",
-    "vitest": "4.0.6"
+    "vitest": "4.1.0"
   },
   "dependencies": {
-    "uuid": "^11.1.0"
+    "uuid": "^13.0.0"
   }
 }
