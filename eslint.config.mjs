@@ -7,7 +7,7 @@ export default [
   ...eslintConfigInternxt,
   {
     rules: {
-      "@typescript-eslint/no-explicit-any": "warn",
-    }
-  }
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
 ];
