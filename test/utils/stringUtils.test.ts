@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { stringUtils } from '../../src';
 
-const { base64UrlSafetoUUID, fromBase64UrlSafe, generateRandomStringUrlSafe, toBase64UrlSafe } = stringUtils;
+const { base64UrlSafetoUUID, fromBase64UrlSafe, generateRandomStringUrlSafe, toBase64UrlSafe, validateV4Uuid } =
+  stringUtils;
 
 describe('stringUtils', () => {
   describe('toBase64UrlSafe', () => {
@@ -67,6 +68,27 @@ describe('stringUtils', () => {
       const base64UrlSafe = '8yqR2seZThOqF4xNngMjyQ';
       const uuid = base64UrlSafetoUUID(base64UrlSafe);
       expect(uuid).toBe('f32a91da-c799-4e13-aa17-8c4d9e0323c9');
+    });
+  });
+
+  describe('validateV4Uuid', () => {
+    it('should return true for a valid UUIDv4', () => {
+      expect(validateV4Uuid('f32a91da-c799-4e13-aa17-8c4d9e0323c9')).toBe(true);
+    });
+
+    it('should return false for an invalid UUIDv4', () => {
+      expect(validateV4Uuid('invalid-uuid')).toBe(false);
+      expect(validateV4Uuid('f32a91da-c799-4e13-aa17-8c4d9e0323c99')).toBe(false);
+      expect(validateV4Uuid('00000000-0000-0000-0000-000000000000')).toBe(false);
+      expect(validateV4Uuid('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa')).toBe(false);
+    });
+
+    it('should return false for an empty string', () => {
+      expect(validateV4Uuid('')).toBe(false);
+    });
+
+    it('should return false for a string with incorrect length', () => {
+      expect(validateV4Uuid('12345678-1234-1234-1234-123456789012')).toBe(false);
     });
   });
 });

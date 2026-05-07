@@ -1,6 +1,15 @@
 import { randomBytes } from 'crypto';
 import { Buffer } from 'buffer';
-import { validate as validateUuidv4 } from 'uuid';
+
+/**
+ * Checks if a string is a valid UUID v4
+ * @param uuid - The string to check
+ * @returns True if the string is a valid UUID v4, false otherwise
+ */
+const validateV4Uuid = (uuid: string): boolean => {
+  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return UUID_REGEX.test(uuid);
+};
 
 /**
  * Converts a standard Base64 string into a URL-safe Base64 variant:
@@ -52,14 +61,12 @@ const fromBase64UrlSafe = (urlSafe: string): string => {
  * @returns A URL-safe string exactly `size` characters long
  */
 const generateRandomStringUrlSafe = (size: number): string => {
-  if (size <= 0) {
+  if (!Number.isInteger(size) || size <= 0) {
     throw new Error('Size must be a positive integer');
   }
-  // Base64 yields 4 chars per 3 bytes, so it computes the minimum bytes required
-  const numBytes = Math.ceil((size * 3) / 4);
-  const buf = randomBytes(numBytes).toString('base64');
-
-  return toBase64UrlSafe(buf).substring(0, size);
+  const charsUrlSafe = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+  const random = randomBytes(size);
+  return Array.from(random, (byte) => charsUrlSafe[byte % charsUrlSafe.length]).join('');
 };
 
 /**
@@ -70,8 +77,10 @@ const generateRandomStringUrlSafe = (size: number): string => {
 function base64UrlSafetoUUID(base64UrlSafe: string): string {
   const hex = Buffer.from(fromBase64UrlSafe(base64UrlSafe), 'base64').toString('hex');
 
-  return `${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}` +
-    `-${hex.substring(16, 20)}-${hex.substring(20)}`;
+  return (
+    `${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}` +
+    `-${hex.substring(16, 20)}-${hex.substring(20)}`
+  );
 }
 
 /**
@@ -82,7 +91,7 @@ function base64UrlSafetoUUID(base64UrlSafe: string): string {
  * @returns The decoded v4 UUID string.
  */
 const decodeV4Uuid = (value: string) => {
-  if (!validateUuidv4(value)) {
+  if (!validateV4Uuid(value)) {
     try {
       return base64UrlSafetoUUID(value);
     } catch {
@@ -101,7 +110,7 @@ const decodeV4Uuid = (value: string) => {
  * @throws {Error} If the provided UUIDv4 is not valid.
  */
 const encodeV4Uuid = (v4Uuid: string) => {
-  if (!validateUuidv4(v4Uuid)) {
+  if (!validateV4Uuid(v4Uuid)) {
     throw new Error('The provided UUIDv4 is not valid');
   }
   const removedUuidDecoration = v4Uuid.replace(/-/g, '');
@@ -117,4 +126,5 @@ export default {
   base64UrlSafetoUUID,
   decodeV4Uuid,
   encodeV4Uuid,
+  validateV4Uuid,
 };
