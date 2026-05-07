@@ -35,8 +35,11 @@ export default function renameIfNeeded(
         incrementIndex,
       };
     })
-    .filter((item) => item.cleanName.toLowerCase() === cleanFilename.toLowerCase()
-      && (item.type?.toLowerCase() ?? '') === (type?.toLowerCase() ?? ''))
+    .filter(
+      (item) =>
+        item.cleanName.toLowerCase() === cleanFilename.toLowerCase() &&
+        (item.type?.toLowerCase() ?? '') === (type?.toLowerCase() ?? ''),
+    )
     .sort((a, b) => b.incrementIndex - a.incrementIndex);
 
   const filenameExists = !!infoFilenames.length;
