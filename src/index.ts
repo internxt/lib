@@ -3,5 +3,6 @@ import auth from './auth';
 import aes from './aes';
 import request from './request';
 import stringUtils from './utils/stringUtils';
+import { TokenStatus } from './auth/checkTokenExpiration';
 
-export { items, auth, aes, request, stringUtils };
+export { items, auth, aes, request, stringUtils, TokenStatus };
