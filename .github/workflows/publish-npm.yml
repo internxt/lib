@@ -11,19 +11,20 @@ jobs:
       id-token: write
       packages: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
         with:
-          node-version: '22.x'
+          node-version: ${{ matrix.node-version }}
 
-      - run: |
-          echo "@internxt:registry=https://npm.pkg.github.com/" > .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+      - name: Install dependencies
+        run: npm ci
 
-      - run: yarn
-      - run: yarn run build
+      - name: Build
+        run: npm run build
 
-      # Change the registry to npmjs (to publish)
       - run: |
           echo "registry=https://registry.npmjs.org/" > .npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc

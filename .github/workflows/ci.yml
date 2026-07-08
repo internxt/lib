@@ -2,9 +2,7 @@ name: internxt/lib CI
 
 on:
   push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -14,18 +12,20 @@ jobs:
       packages: write
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: 'https://npm.pkg.github.com'
 
-      - run: yarn
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: yarn run lint && yarn run format && yarn run test
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Tests
+        run: npm run lint && npm run format && npm run test
         env:
           CI: true
