@@ -1,9 +1,11 @@
-export enum TokenStatus {
-  INVALID = 'INVALID',
-  EXPIRED = 'EXPIRED',
-  REFRESH_REQUIRED = 'REFRESH_REQUIRED',
-  VALID = 'VALID',
-}
+export const TokenStatus = {
+  INVALID: 'INVALID',
+  EXPIRED: 'EXPIRED',
+  REFRESH_REQUIRED: 'REFRESH_REQUIRED',
+  VALID: 'VALID',
+} as const;
+
+export type TokenStatus = (typeof TokenStatus)[keyof typeof TokenStatus];
 
 const SIX_HOURS_IN_SECONDS = 6 * 60 * 60;
 
