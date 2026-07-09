@@ -14,7 +14,8 @@ export default function validateJwtAndCheckExpiration(token: string): DecodedJwt
   }
 
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(Buffer.from(base64, 'base64').toString());
     if (typeof payload.exp !== 'number') {
       return null;
     }
