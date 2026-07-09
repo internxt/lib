@@ -3,8 +3,12 @@ export interface DecodedJwtClaims {
   iat: number | null;
 }
 
+function decodeBase64UrlSegment(seg: string): string {
+  return Buffer.from(seg.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString();
+}
+
 /**
- * Validates JWT token structure and parses the expiration and issued-at claims.
+ * Validates JWT token structure, header (presence of alg), and parses the expiration and issued-at claims.
  * Does not verify signature or issuer.
  * @returns The exp and iat claims (iat is null if absent), or null if invalid structure
  */
@@ -14,11 +18,18 @@ export default function validateJwtAndCheckExpiration(token: string): DecodedJwt
   }
 
   try {
-    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    const payload = JSON.parse(Buffer.from(base64, 'base64').toString());
-    if (typeof payload.exp !== 'number') {
+    const [headerSeg, payloadSeg] = token.split('.');
+
+    const header = JSON.parse(decodeBase64UrlSegment(headerSeg));
+    if (typeof header.alg !== 'string') {
       return null;
     }
+
+    const payload = JSON.parse(decodeBase64UrlSegment(payloadSeg));
+    if (typeof payload.exp !== 'number' || payload.exp < 0) {
+      return null;
+    }
+
     return {
       exp: payload.exp,
       iat: typeof payload.iat === 'number' ? payload.iat : null,
