@@ -12,7 +12,7 @@ function decodeBase64UrlSegment(seg: string): string {
  * Does not verify signature or issuer.
  * @returns The exp and iat claims (iat is null if absent), or null if invalid structure
  */
-export default function validateJwtAndCheckExpiration(token: string): DecodedJwtClaims | null {
+export function validateJwt(token: string): DecodedJwtClaims | null {
   if (typeof token !== 'string' || token.split('.').length !== 3) {
     return null;
   }
