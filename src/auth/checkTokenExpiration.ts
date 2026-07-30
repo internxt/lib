@@ -52,6 +52,15 @@ export function checkTokenExpiration(expirationTimestamp: number, issuedAtTimest
   return TokenStatus.VALID;
 }
 
-export function calculateRefreshThreshold(expirationTimestamp: number, issuedAtTimestamp?: number | null): number {
+export function calculateMillisecondsUntilRefresh(
+  expirationTimestamp: number,
+  issuedAtTimestamp?: number | null,
+): number {
+  const currentTime = Math.floor(Date.now() / 1000);
+  const refreshThreshold = calculateRefreshThreshold(expirationTimestamp, issuedAtTimestamp);
+  return Math.max(0, (expirationTimestamp - currentTime - refreshThreshold) * 1000);
+}
+
+function calculateRefreshThreshold(expirationTimestamp: number, issuedAtTimestamp?: number | null): number {
   return typeof issuedAtTimestamp === 'number' ? (expirationTimestamp - issuedAtTimestamp) / 2 : SIX_HOURS_IN_SECONDS;
 }
