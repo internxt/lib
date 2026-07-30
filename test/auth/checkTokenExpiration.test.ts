@@ -1,7 +1,7 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { auth } from '../../src';
 
-const { checkTokenExpiration, TokenStatus } = auth;
+const { calculateMillisecondsUntilRefresh, checkTokenExpiration, TokenStatus } = auth;
 
 describe('checkTokenExpiration tests', () => {
   test('when the token expired more than two days ago, then it is EXPIRED', () => {
@@ -65,6 +65,53 @@ describe('checkTokenExpiration tests', () => {
       const issuedAt = Math.floor(Date.now() / 1000);
       const expiration = issuedAt + 30 * 24 * 60 * 60; // 30 day lifetime
       expect(checkTokenExpiration(expiration, issuedAt)).to.be.equal(TokenStatus.VALID);
+    });
+  });
+
+  describe('calculateMillisecondsUntilRefresh', () => {
+    const SECOND_IN_MILLISECONDS = 1_000;
+    const HOUR_IN_SECONDS = 60 * 60;
+    const DAY_IN_HOURS = 24;
+    const SIX_HOURS = 6;
+    const TWELVE_HOURS = 12;
+    const TEST_DATE = new Date('2026-01-01T00:00:00.000Z');
+    test('returns the time until halfway through the token lifetime when iat is present', () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(TEST_DATE);
+
+      const issuedAt = Math.floor(Date.now() / SECOND_IN_MILLISECONDS);
+      const expiration = issuedAt + DAY_IN_HOURS * HOUR_IN_SECONDS;
+
+      expect(calculateMillisecondsUntilRefresh(expiration, issuedAt)).toBe(
+        TWELVE_HOURS * HOUR_IN_SECONDS * SECOND_IN_MILLISECONDS,
+      );
+
+      vi.useRealTimers();
+    });
+
+    test('uses the six-hour threshold when iat is missing', () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(TEST_DATE);
+
+      const expiration = Math.floor(Date.now() / 1000) + DAY_IN_HOURS * HOUR_IN_SECONDS;
+
+      expect(calculateMillisecondsUntilRefresh(expiration)).toBe(
+        (DAY_IN_HOURS - SIX_HOURS) * HOUR_IN_SECONDS * SECOND_IN_MILLISECONDS,
+      );
+
+      vi.useRealTimers();
+    });
+
+    test('returns zero when the refresh threshold has already passed', () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date(TEST_DATE.getTime() + TWELVE_HOURS * HOUR_IN_SECONDS * SECOND_IN_MILLISECONDS));
+
+      const issuedAt = Math.floor(TEST_DATE.getTime() / SECOND_IN_MILLISECONDS);
+      const expiration = issuedAt + TWELVE_HOURS * HOUR_IN_SECONDS;
+
+      expect(calculateMillisecondsUntilRefresh(expiration, issuedAt)).toBe(0);
+
+      vi.useRealTimers();
     });
   });
 });

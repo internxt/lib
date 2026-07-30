@@ -30,8 +30,7 @@ export function isTokenRefreshRequired(expirationTimestamp: number, issuedAtTime
   const currentTime = Math.floor(Date.now() / 1000);
   const remainingSeconds = expirationTimestamp - currentTime;
 
-  const refreshThreshold =
-    typeof issuedAtTimestamp === 'number' ? (expirationTimestamp - issuedAtTimestamp) / 2 : SIX_HOURS_IN_SECONDS;
+  const refreshThreshold = calculateRefreshThreshold(expirationTimestamp, issuedAtTimestamp);
 
   return remainingSeconds > 0 && remainingSeconds <= refreshThreshold;
 }
@@ -43,10 +42,7 @@ export function isTokenRefreshRequired(expirationTimestamp: number, issuedAtTime
  * @param issuedAtTimestamp - Unix timestamp in seconds the token was issued at
  * @returns EXPIRED, REFRESH_REQUIRED, or VALID
  */
-export default function checkTokenExpiration(
-  expirationTimestamp: number,
-  issuedAtTimestamp?: number | null,
-): TokenStatus {
+export function checkTokenExpiration(expirationTimestamp: number, issuedAtTimestamp?: number | null): TokenStatus {
   if (isTokenExpired(expirationTimestamp)) {
     return TokenStatus.EXPIRED;
   }
@@ -54,4 +50,17 @@ export default function checkTokenExpiration(
     return TokenStatus.REFRESH_REQUIRED;
   }
   return TokenStatus.VALID;
+}
+
+export function calculateMillisecondsUntilRefresh(
+  expirationTimestamp: number,
+  issuedAtTimestamp?: number | null,
+): number {
+  const currentTime = Math.floor(Date.now() / 1000);
+  const refreshThreshold = calculateRefreshThreshold(expirationTimestamp, issuedAtTimestamp);
+  return Math.max(0, (expirationTimestamp - currentTime - refreshThreshold) * 1000);
+}
+
+function calculateRefreshThreshold(expirationTimestamp: number, issuedAtTimestamp?: number | null): number {
+  return typeof issuedAtTimestamp === 'number' ? (expirationTimestamp - issuedAtTimestamp) / 2 : SIX_HOURS_IN_SECONDS;
 }
